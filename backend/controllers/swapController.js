@@ -68,3 +68,8 @@ exports.getRecentSwaps = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+exports.getTradeCount = async (req, res) => {
+  const { user } = req.query;
+  const count = await Swap.countDocuments({ user });
+  res.json({ count });
+};

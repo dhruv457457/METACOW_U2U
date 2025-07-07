@@ -1,6 +1,6 @@
 import { Pencil } from "lucide-react";
-
-export default function ProfileHeader({ user, onEdit, reputation }) {
+import { useState } from "react";
+export default function ProfileHeader({ user, onEdit, reputation, followStats }) {
   const truncate = (addr) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
 
   return (
@@ -25,6 +25,11 @@ export default function ProfileHeader({ user, onEdit, reputation }) {
           </p>
         )}
       </div>
+<div className="flex gap-6 mt-4 text-sm text-gray-600 font-medium">
+  <span>👥 Followers: {followStats?.followersCount}</span>
+  <span>➡️ Following: {followStats?.followingCount}</span>
+  <span>💱 Trades: {user?.totalTrades || 0}</span>
+</div>
 
       <button
         onClick={onEdit}

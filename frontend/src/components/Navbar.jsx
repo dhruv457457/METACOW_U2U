@@ -25,7 +25,7 @@ export default function Navbar() {
     const fetchBalance = async () => {
       if (!address) return;
       try {
-        const dummyPair = "0xc5D1Fd87f5170ef8021338F41F0BEa85A9899Ee6";
+        const dummyPair = "0xe4452Fb3896115E28E8d4A5491019Ad8f0b66050";
         const balance = await getLPBalance(dummyPair, address);
         setLpBalance(balance);
       } catch (err) {

@@ -17,6 +17,7 @@ export default function ProfilePage() {
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [reputation, setReputation] = useState(null);
+const [followStats, setFollowStats] = useState({ followersCount: 0, followingCount: 0 });
 
   const { walletData } = useWallet();
   const address = walletData?.address;
@@ -34,9 +35,21 @@ export default function ProfilePage() {
       }
     };
 
+
     if (isConnected) fetchUser();
   }, [address]);
-
+useEffect(() => {
+  const fetchFollowStats = async () => {
+    if (!user?._id) return;
+    try {
+const res = await axios.get(`http://localhost:5000/api/follow/stats/wallet/${address}`);
+      setFollowStats(res.data);
+    } catch (err) {
+      console.error("Follow stats fetch error:", err);
+    }
+  };
+  fetchFollowStats();
+}, [user]);
   useEffect(() => {
     const fetchReputation = async () => {
       try {
@@ -69,6 +82,18 @@ export default function ProfilePage() {
 
     if (isConnected) fetchReputation();
   }, [address]);
+useEffect(() => {
+  const fetchTradeCount = async () => {
+    try {
+      const res = await axios.get(`http://localhost:5000/api/swaps/count?user=${address}`);
+      setUser((prev) => ({ ...prev, totalTrades: res.data?.count || 0 }));
+    } catch (err) {
+      console.error("Trade count fetch error:", err);
+    }
+  };
+
+  if (isConnected) fetchTradeCount();
+}, [address]);
 
   if (!isConnected) {
     return <div className="text-center py-20 text-gray-500">🔌 Connect your wallet to view your profile.</div>;
@@ -84,7 +109,12 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
-      <ProfileHeader user={user} reputation={reputation} onEdit={() => setEditing(true)} />
+<ProfileHeader
+  user={user}
+  reputation={reputation}
+  onEdit={() => setEditing(true)}
+  followStats={followStats} // ✅ ADD THIS
+/>
 
       {editing && (
         <ProfileEdit

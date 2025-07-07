@@ -26,6 +26,7 @@ export default function App() {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/admin" element={<FaucetAdminPanel />} />
               <Route path="/faucet" element={<FaucetClaim />} />
+              
             </Routes>
           </div>
         </main>

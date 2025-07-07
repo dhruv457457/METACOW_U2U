@@ -41,3 +41,20 @@ exports.getFollowing = async (req, res) => {
   const following = await Follow.find({ follower: userId }).populate("following", "username profileImage wallet");
   res.json(following.map(f => f.following));
 };
+exports.getFollowStatsByWallet = async (req, res) => {
+  try {
+    const { wallet } = req.params;
+    const user = await User.findOne({ wallet: wallet.toLowerCase() });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const followersCount = await Follow.countDocuments({ following: user._id });
+    const followingCount = await Follow.countDocuments({ follower: user._id });
+
+    res.json({ followersCount, followingCount });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

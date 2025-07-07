@@ -27,6 +27,7 @@ app.use("/api/feed", feedRoutes);
 app.use("/api", followRoutes); // ✅ Mount all follow-related routes here
 app.use('/api/reputation', reputationRoutes);
 app.use("/api/auth", authRoutes); // ✅ Add this line
+app.use("/api/follow", followRoutes); // ✅ NEW: Mount follow routes
 // Health check
 app.get("/ping", (req, res) => res.status(200).send("pong"));
 app.get("/", (req, res) => res.send("✅ MetaCow backend is live"));
