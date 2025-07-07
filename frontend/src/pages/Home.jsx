@@ -71,7 +71,7 @@ const features = [
     const fetchUser = async () => {
       if (!address) return;
       try {
-        const res = await axios.get(`https://metac-1.onrender.com/api/users/wallet/${address}`);
+        const res = await axios.get(`http://localhost:5000/api/users/wallet/${address}`);
         setUserId(res.data._id);
       } catch (err) {
         console.error("Failed to fetch user ID", err);

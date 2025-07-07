@@ -9,20 +9,20 @@ export default function SearchFollow({ currentUserId }) {
   useEffect(() => {
     if (!currentUserId) return;
     axios
-      .get(`https://metac-1.onrender.com/api/following/${currentUserId}`)
+      .get(`http://localhost:5000/api/following/${currentUserId}`)
       .then((res) => setFollowing(res.data.map((u) => u._id)))
       .catch((err) => console.error("Failed to fetch following list", err));
   }, [currentUserId]);
 
   const search = async () => {
     if (!query.trim()) return;
-    const res = await axios.get(`https://metac-1.onrender.com/api/users/search?query=${query}`);
+    const res = await axios.get(`http://localhost:5000/api/users/search?query=${query}`);
     setResults(res.data || []);
   };
 
   const followUser = async (targetUserId) => {
     try {
-      await axios.post(`https://metac-1.onrender.com/api/follow/${targetUserId}`, {
+      await axios.post(`http://localhost:5000.com/api/follow/${targetUserId}`, {
         followerId: currentUserId,
       });
       setFollowing((prev) => [...prev, targetUserId]);

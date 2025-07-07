@@ -15,7 +15,7 @@ export default function SocialFeed({ wallet }) {
   useEffect(() => {
     const fetchFeed = async () => {
       try {
-        const res = await axios.get(`https://metac-1.onrender.com/api/feed/${wallet}`);
+        const res = await axios.get(`http://localhost:5000/api/feed/${wallet}`);
         setFeed(res.data?.events || []);
       } catch (err) {
         console.error("❌ Failed to fetch feed:", err);

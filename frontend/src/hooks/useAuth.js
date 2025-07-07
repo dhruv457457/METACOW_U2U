@@ -25,7 +25,7 @@ export function useAuth() {
       const signature = await walletData.signer.signMessage(nonce);
 
       // 3. Send to backend for verification
-      const verifyRes = await fetch("/api/auth/verify", {
+      const verifyRes = await fetch("http://localhost:5000/api/auth/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ wallet: walletData.address, signature }),

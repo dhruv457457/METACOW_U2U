@@ -25,7 +25,7 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`https://metac-1.onrender.com/api/users/wallet/${address}`);
+        const res = await axios.get(`http://localhost:5000/api/users/wallet/${address}`);
         setUser(res.data);
       } catch (err) {
         console.error("User fetch error:", err);

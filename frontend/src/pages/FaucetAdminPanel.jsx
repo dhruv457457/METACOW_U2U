@@ -5,14 +5,9 @@ import { useWallet } from "../contexts/WalletContext";
 import TokenSelector from "../components/TokenSelector";
 import { createPair, getFactoryContract } from "../utils/contractUtils";
 
-const tokenList = [
-  { symbol: "TKA", address: "0x1e792D4c34c3d04Bd127aFEf0c1696E912c755aa" },
-  { symbol: "TKB", address: "0x9e53abdDBFa9DC6A9bCD9D0e5DD7144F2701718D" },
-  { symbol: "USDT", address: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238" },
-  { symbol: "MOO", address: "0xA18938653750B70DCBbC0DF5a03D9F2e5958D8E8" },
-];
+import { tokenList } from "../utils/constants";
 
-const FAUCET_ADDRESS = "0xdC9Ac4cB6a8C8a09e5579881f2f7B463917Cc26a";
+const FAUCET_ADDRESS = "0xD1504b93610AaA68C1F93165120b7b2B906ae9A8";
 
 const ERC20_ABI = [
   "function approve(address spender, uint256 amount) public returns (bool)"

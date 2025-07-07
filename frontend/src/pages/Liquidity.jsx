@@ -8,7 +8,7 @@ import TransactionList from "../components/TransactionList";
 import { getPairAddress, getLPBalance, claimRewards } from "../utils/contractUtils";
 import { getUserTransactions } from "../utils/transactionLog";
 import { showSuccess, showError } from "../utils/toast";
-
+import { tokenList } from "../utils/constants";
 export default function Liquidity() {
   const { walletData } = useWallet();
 const address = walletData?.address;
@@ -16,15 +16,10 @@ const signer = walletData?.signer;
 const isConnected = !!address;
 
 const DEFAULT_TOKENS = {
-  TKA: {
-    symbol: "TKA",
-    address: "0x1e792D4c34c3d04Bd127aFEf0c1696E912c755aa",
-  },
-  TKB: {
-    symbol: "TKB",
-    address: "0x9e53abdDBFa9DC6A9bCD9D0e5DD7144F2701718D",
-  },
+  TKA: tokenList.find((t) => t.symbol === "TKA"),
+  TKB: tokenList.find((t) => t.symbol === "TKB"),
 };
+
 
    const [tokenA, setTokenA] = useState(DEFAULT_TOKENS.TKA);
   const [tokenB, setTokenB] = useState(DEFAULT_TOKENS.TKB);

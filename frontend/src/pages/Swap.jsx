@@ -16,18 +16,13 @@ import SwapForm from "../components/swap/SwapForm";
 import SwapChart from "../components/swap/SwapChart";
 import TransactionList from "../components/TransactionList";
 import { ethers } from "ethers";
-
+import { tokenList } from "../utils/constants";
 // ✅ Default tokens (TKA & TKB)
 const DEFAULT_TOKENS = {
-  TKA: {
-    symbol: "TKA",
-    address: "0x1e792D4c34c3d04Bd127aFEf0c1696E912c755aa",
-  },
-  TKB: {
-    symbol: "TKB",
-    address: "0x9e53abdDBFa9DC6A9bCD9D0e5DD7144F2701718D",
-  },
+  TKA: tokenList.find((t) => t.symbol === "TKA"),
+  TKB: tokenList.find((t) => t.symbol === "TKB"),
 };
+
 
 export default function Swap() {
   const [tokenA, setTokenA] = useState(DEFAULT_TOKENS.TKA);
