@@ -18,6 +18,9 @@ const followRoutes = require("./routes/followRoutes"); // ✅ NEW
 const reputationRoutes = require('./routes/reputationRoutes');
 const authRoutes = require("./routes/authRoutes");
 // ✅ Route usage
+const postRoutes = require("./routes/postRoutes");
+app.use("/api/posts", postRoutes);
+
 app.use("/api/users", userRoutes);
 app.use("/api/swaps", swapRoutes);
 app.use("/api/pairs", pairRoutes);

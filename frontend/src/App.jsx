@@ -9,6 +9,7 @@ import Liquidity from "./pages/Liquidity";
 import ProfilePage from "./pages/ProfilePage"; // Import ProfilePage if needed
 import FaucetAdminPanel from "./pages/FaucetAdminPanel";
 import FaucetClaim from "./pages/FaucetClaim"; // Import FaucetClaim if needed
+import SocialPage from "./pages/SocialPage";
 export default function App() {
   return (
     <WalletProvider>
@@ -26,7 +27,7 @@ export default function App() {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/admin" element={<FaucetAdminPanel />} />
               <Route path="/faucet" element={<FaucetClaim />} />
-              
+              <Route path="/social" element={<SocialPage />} />
             </Routes>
           </div>
         </main>
