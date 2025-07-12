@@ -57,7 +57,7 @@ const res = await axios.get(`http://localhost:5000/api/follow/stats/wallet/${add
         const factory = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, provider);
         const iface = new Interface(PAIR_ABI);
         const pairCount = await factory.allPairsLength();
-+        let totalScore = 0;
+    let totalScore = 0;
 
         for (let i = 0; i < pairCount; i++) {
           const pairAddr = await factory.allPairs(i);
