@@ -25,8 +25,7 @@ export default function LiquidityForm({
 }) {
   const [activeTab, setActiveTab] = useState("add");
 const TOKEN_DECIMALS = {
-  USDC: 6,
-  USDT: 6,
+  USDT: 18,
   TKA: 18,
   TKB: 18,
   MOO: 18,
