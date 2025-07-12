@@ -8,7 +8,6 @@ import logo from "../assets/MetaCowLogo.png";
 export default function Navbar() {
   const {
     walletData,
-    setWalletData,
     connectWallet,
     disconnect,
     isConnecting,
@@ -37,11 +36,8 @@ export default function Navbar() {
 
   const handleConnect = async () => {
     if (isConnecting) return;
-
     const result = await connectWallet();
-    if (!result.success) {
-      showError(result.error || "Wallet connection failed.");
-    }
+    if (!result.success) showError(result.error || "Wallet connection failed.");
   };
 
   const handleDisconnect = () => {
@@ -53,34 +49,37 @@ export default function Navbar() {
     { path: "/", label: "Home", icon: "🏠" },
     { path: "/swap", label: "Swap", icon: "🔄" },
     { path: "/liquidity", label: "Liquidity", icon: "💧" },
+    { path: "/social", label: "Social", icon: "📢" },
     { path: "/faucet", label: "Faucet", icon: "🪙" },
     { path: "/profile", label: "Profile", icon: "👤" },
   ];
 
   return (
     <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 shadow-lg sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-4">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative">
-              <img
-                src={logo}
-                alt="MetaCow"
-                className="w-12 h-12 transition-transform group-hover:scale-110"
-              />
-              <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full opacity-0 group-hover:opacity-20 transition-opacity blur"></div>
-            </div>
-            <div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent tracking-tight">
-                MetaCow
-              </span>
-              <div className="text-xs text-gray-500 font-medium">
-                DeFi Exchange
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 w-full">
+        <div className="flex items-center justify-between w-full gap-4">
+          {/* LEFT: Logo */}
+          <div className="shrink-0 flex items-center">
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="relative">
+                <img
+                  src={logo}
+                  alt="MetaCow"
+                  className="w-12 h-12 transition-transform group-hover:scale-110"
+                />
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full opacity-0 group-hover:opacity-20 transition-opacity blur"></div>
               </div>
-            </div>
-          </Link>
+              <div>
+                <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent tracking-tight">
+                  MetaCow
+                </span>
+                <div className="text-xs text-gray-500 font-medium">DeFi Exchange</div>
+              </div>
+            </Link>
+          </div>
 
-          <div className="hidden md:flex items-center gap-2">
+          {/* CENTER: Nav */}
+          <div className="hidden md:flex items-center gap-2 grow justify-center">
             {navItems.map((item) => (
               <Link
                 key={item.path}
@@ -97,10 +96,11 @@ export default function Navbar() {
             ))}
           </div>
 
-          <div className="flex items-center gap-4">
+          {/* RIGHT: Network + Wallet */}
+          <div className="flex items-center gap-4 shrink-0">
             <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              Sepolia Testnet
+              BNB Testnet
             </div>
 
             {isConnected ? (
@@ -124,12 +124,7 @@ export default function Navbar() {
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
 
@@ -141,12 +136,8 @@ export default function Navbar() {
                           <span className="text-white text-lg">👤</span>
                         </div>
                         <div>
-                          <div className="font-semibold text-gray-800">
-                            Connected Wallet
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            Ethereum Network
-                          </div>
+                          <div className="font-semibold text-gray-800">Connected Wallet</div>
+                          <div className="text-sm text-gray-500">Ethereum Network</div>
                         </div>
                       </div>
 
@@ -207,6 +198,7 @@ export default function Navbar() {
           </div>
         </div>
 
+        {/* Mobile Nav Scroll */}
         <div className="md:hidden mt-4 flex gap-2 overflow-x-auto pb-2">
           {navItems.map((item) => (
             <Link
@@ -227,3 +219,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
+
