@@ -79,56 +79,46 @@ export async function addLiquidity(
   tokenB
 ) {
   const { signer } = await getProviderAndSigner();
-  const pair = new ethers.Contract(pairAddress, PAIR_ABI, signer);
-
-  // Get token contracts for balance checking
-  const tokenAContract = new ethers.Contract(
-    tokenA,
-    [
-      "function balanceOf(address account) public view returns (uint256)",
-      "function approve(address spender, uint256 amount) public returns (bool)",
-    ],
-    signer
-  );
-
-  const tokenBContract = new ethers.Contract(
-    tokenB,
-    [
-      "function balanceOf(address account) public view returns (uint256)",
-      "function approve(address spender, uint256 amount) public returns (bool)",
-    ],
-    signer
-  );
-
-  // Check balances first
   const userAddress = await signer.getAddress();
-  const balanceA = await tokenAContract.balanceOf(userAddress);
-  const balanceB = await tokenBContract.balanceOf(userAddress);
 
-  if (balanceA < amountA) {
-    throw new Error(
-      `Insufficient token balance. Required: ${ethers.formatUnits(
-        amountA,
-        18
-      )}, Available: ${ethers.formatUnits(balanceA, 18)}`
-    );
-  }
+  // Sort tokens by address
+  const [token0, token1] =
+    tokenA.toLowerCase() < tokenB.toLowerCase()
+      ? [tokenA, tokenB]
+      : [tokenB, tokenA];
 
-  if (balanceB < amountB) {
-    throw new Error(
-      `Insufficient token balance. Required: ${ethers.formatUnits(
-        amountB,
-        18
-      )}, Available: ${ethers.formatUnits(balanceB, 18)}`
-    );
-  }
+  const [amount0, amount1] =
+    tokenA.toLowerCase() < tokenB.toLowerCase()
+      ? [amountA, amountB]
+      : [amountB, amountA];
 
-  // Approve tokens to pair contract
-  await (await tokenAContract.approve(pairAddress, amountA)).wait();
-  await (await tokenBContract.approve(pairAddress, amountB)).wait();
+  const token0Contract = new ethers.Contract(
+    token0,
+    ["function balanceOf(address) view returns (uint256)", "function approve(address, uint256) returns (bool)"],
+    signer
+  );
 
-  // Call addLiquidity
-  const tx = await pair.addLiquidity(amountA, amountB);
+  const token1Contract = new ethers.Contract(
+    token1,
+    ["function balanceOf(address) view returns (uint256)", "function approve(address, uint256) returns (bool)"],
+    signer
+  );
+
+  // Check balances
+  const balance0 = await token0Contract.balanceOf(userAddress);
+  const balance1 = await token1Contract.balanceOf(userAddress);
+
+  if (balance0 < amount0)
+    throw new Error("Insufficient token0 balance");
+  if (balance1 < amount1)
+    throw new Error("Insufficient token1 balance");
+
+  // Approve
+  await (await token0Contract.approve(pairAddress, amount0)).wait();
+  await (await token1Contract.approve(pairAddress, amount1)).wait();
+
+  const pair = new ethers.Contract(pairAddress, PAIR_ABI, signer);
+  const tx = await pair.addLiquidity(amount0, amount1); // ALWAYS token0, token1
   return await tx.wait();
 }
 
