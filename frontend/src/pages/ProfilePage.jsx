@@ -57,7 +57,7 @@ const res = await axios.get(`http://localhost:5000/api/follow/stats/wallet/${add
         const factory = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, provider);
         const iface = new Interface(PAIR_ABI);
         const pairCount = await factory.allPairsLength();
-        let totalScore = 0;
++        let totalScore = 0;
 
         for (let i = 0; i < pairCount; i++) {
           const pairAddr = await factory.allPairs(i);
@@ -102,10 +102,10 @@ useEffect(() => {
   if (loading) {
     return <div className="text-center mt-12 text-gray-500">⏳ Loading profile...</div>;
   }
+if (!user || !user.username || user.username === "unknown") {
+  return <RegisterProfile wallet={address} onRegister={setUser} />;
+}
 
-  if (!user) {
-    return <RegisterProfile wallet={address} onRegister={setUser} />;
-  }
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
@@ -139,3 +139,5 @@ useEffect(() => {
     </div>
   );
 }
++
+

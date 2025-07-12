@@ -1,12 +1,7 @@
 import { useState } from "react";
 
 // ✅ Update this list with your actual token data
-const tokenList = [
-  { symbol: "TKA", address: "0xD7c6cDFE1EB47fb74F2682F672B84c70A1891c93" },
-  { symbol: "TKB", address: "0x23CB54C5083DCeF3877a32409727cCb9afC4d333" },
-  { symbol: "USDT", address: "0x35f7F94224ed0fE995f391CeC8FA7dEe64107Bf1" },
-  { symbol: "MOO", address: "0x26F9Ec14564B73DC95a79898bce62656a9A5503D" },
-];
+import { tokenList } from "../utils/constants"; // Assuming you have a token list defined
 
 export default function TokenSelector({ selected, onSelect }) {
   const [isOpen, setIsOpen] = useState(false);
