@@ -139,5 +139,3 @@ if (!user || !user.username || user.username === "unknown") {
     </div>
   );
 }
-+
-
