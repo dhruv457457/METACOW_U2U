@@ -1,23 +1,28 @@
 import { Pencil } from "lucide-react";
-import { useState } from "react";
+
 export default function ProfileHeader({ user, onEdit, reputation, followStats }) {
-  const truncate = (addr) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+  const truncate = (addr) => {
+    if (!addr || typeof addr !== "string") return "unknown";
+    return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+  };
 
   return (
     <div className="flex items-center gap-6 bg-white rounded-3xl shadow-md p-6 border border-gray-100">
       <img
-        src={user.profileImage || "/assets/default-avatar.png"}
+        src={user?.profileImage || "/assets/default-avatar.png"}
         alt="Profile"
         className="w-20 h-20 rounded-full object-cover border border-gray-300"
       />
 
       <div className="flex-1">
         <h2 className="text-2xl font-bold text-gray-800">
-          {user.username || truncate(user.wallet)}
+          {user?.username || truncate(user?.wallet)}
         </h2>
-        <p className="text-sm text-gray-500 font-mono">{truncate(user.wallet)}</p>
+        <p className="text-sm text-gray-500 font-mono">
+          {truncate(user?.wallet)}
+        </p>
 
-        {user.bio && <p className="mt-2 text-gray-600">{user.bio}</p>}
+        {user?.bio && <p className="mt-2 text-gray-600">{user.bio}</p>}
 
         {reputation !== null && (
           <p className="mt-2 text-blue-600 font-semibold">
@@ -25,11 +30,12 @@ export default function ProfileHeader({ user, onEdit, reputation, followStats })
           </p>
         )}
       </div>
-<div className="flex gap-6 mt-4 text-sm text-gray-600 font-medium">
-  <span>👥 Followers: {followStats?.followersCount}</span>
-  <span>➡️ Following: {followStats?.followingCount}</span>
-  <span>💱 Trades: {user?.totalTrades || 0}</span>
-</div>
+
+      <div className="flex gap-6 mt-4 text-sm text-gray-600 font-medium">
+        <span>👥 Followers: {followStats?.followersCount || 0}</span>
+        <span>➡️ Following: {followStats?.followingCount || 0}</span>
+        <span>💱 Trades: {user?.totalTrades || 0}</span>
+      </div>
 
       <button
         onClick={onEdit}
