@@ -19,6 +19,7 @@ export default function Navbar() {
   const location = useLocation();
   const [showDropdown, setShowDropdown] = useState(false);
   const [lpBalance, setLpBalance] = useState("0.0");
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -56,7 +57,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 shadow-lg sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 w-full">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 w-full relative">
         <div className="flex items-center justify-between w-full gap-4">
           {/* LEFT: Logo */}
           <div className="shrink-0 flex items-center">
@@ -78,7 +79,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* CENTER: Nav */}
+          {/* CENTER: Nav (Desktop Only) */}
           <div className="hidden md:flex items-center gap-2 grow justify-center">
             {navItems.map((item) => (
               <Link
@@ -195,26 +196,42 @@ export default function Navbar() {
                 )}
               </button>
             )}
+
+            {/* Hamburger (Mobile Only) */}
+            <button
+              className="md:hidden flex items-center px-2 py-2 ml-2"
+              onClick={() => setMobileNavOpen(!mobileNavOpen)}
+              aria-label="Open navigation menu"
+            >
+              <svg className="w-7 h-7 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
           </div>
         </div>
 
-        {/* Mobile Nav Scroll */}
-        <div className="md:hidden mt-4 flex gap-2 overflow-x-auto pb-2">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all duration-200 ${
-                location.pathname === item.path
-                  ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg"
-                  : "text-gray-600 hover:text-purple-600 hover:bg-purple-50"
-              }`}
-            >
-              <span className="text-sm">{item.icon}</span>
-              {item.label}
-            </Link>
-          ))}
-        </div>
+        {/* Mobile Nav Drawer (Mobile Only) */}
+        {mobileNavOpen && (
+          <div className="md:hidden absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-lg z-40 animate-fade-in">
+            <div className="flex flex-col gap-2 p-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setMobileNavOpen(false)}
+                  className={`flex items-center gap-2 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
+                    location.pathname === item.path
+                      ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg"
+                      : "text-gray-600 hover:text-purple-600 hover:bg-purple-50"
+                  }`}
+                >
+                  <span className="text-lg">{item.icon}</span>
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
