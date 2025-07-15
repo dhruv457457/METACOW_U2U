@@ -1,10 +1,16 @@
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF } from '@react-three/drei';
+import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { useRef } from 'react';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { DRACOLoader } from 'three-stdlib';
+
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('/draco/');
 
 function Model({ mouse }) {
   const modelRef = useRef();
-  const { scene } = useGLTF('/models/metacoww.glb');
+  const gltf = useLoader(GLTFLoader, '/models/metacoww.glb', loader => {
+    loader.setDRACOLoader(dracoLoader);
+  });
 
   useFrame(() => {
     const t = performance.now() / 1000;
@@ -17,7 +23,7 @@ function Model({ mouse }) {
 
   return (
     <primitive
-      object={scene}
+      object={gltf.scene}
       ref={modelRef}
       scale={2.2}
       position={[0, -0.2, 0]}
