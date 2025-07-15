@@ -99,7 +99,7 @@ const TOKEN_DECIMALS = {
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl p-6">
+<div className="bg-white rounded-3xl p-6">
       {/* Tab Selector */}
       <div className="flex mb-6 bg-gray-100 rounded-full">
         {["add", "remove"].map((tab) => (

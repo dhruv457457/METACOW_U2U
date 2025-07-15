@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { useWallet } from "../contexts/WalletContext";
 import { toast } from "react-hot-toast";
+import { motion } from "framer-motion";
 import { tokenList } from "../utils/constants";
 
 const FAUCET_ADDRESS = "0xD1504b93610AaA68C1F93165120b7b2B906ae9A8";
@@ -88,78 +89,240 @@ export default function FaucetClaim() {
     return `${hrs}h ${mins}m ${sec}s`;
   };
 
-  return (
-    <div className="min-h-screen py-20 bg-gradient-to-b from-white to-purple-50">
-      <div className="max-w-2xl mx-auto px-6">
-        <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-10 border border-purple-100">
-          <h2 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">
-            🐄 MetaCow Faucet
-          </h2>
-
-          {/* Token Dropdown + Cooldown */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label className="block mb-1 text-sm font-medium text-gray-600">
-                Select a Token
-              </label>
-              <select
-                className="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-300"
-                value={selectedToken.symbol}
-                onChange={(e) =>
-                  setSelectedToken(tokenList.find((t) => t.symbol === e.target.value))
-                }
-              >
-                {tokenList.map((token) => (
-                  <option key={token.symbol} value={token.symbol}>
-                    {token.symbol}
-                  </option>
-                ))}
-              </select>
+  if (!address) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
+            <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span className="text-2xl">🔗</span>
             </div>
-
-            <div className="flex items-end">
-              {cooldown === null ? (
-                <p className="text-gray-500">🔄 Checking cooldown...</p>
-              ) : cooldown === 0 ? (
-                <p className="text-green-600 font-semibold">
-                  ✅ Ready to claim 10 {selectedToken.symbol}!
-                </p>
-              ) : (
-                <p className="text-yellow-600 font-medium">
-                  ⏳ Cooldown: {formatTime(cooldown)}
-                </p>
-              )}
-            </div>
+            <h2 className="text-2xl font-bold text-slate-800 mb-4">
+              Connect Your Wallet
+            </h2>
+            <p className="text-slate-600 max-w-md">
+              Connect your wallet to claim free tokens from the MetaCow Faucet
+            </p>
           </div>
-
-          {/* Claim Button */}
-          <button
-            onClick={handleClaim}
-            disabled={cooldown > 0 || loading}
-            className={`w-full py-4 rounded-xl font-bold text-white text-lg transition-all ${
-              cooldown > 0 || loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
-            }`}
-          >
-            {loading ? "⏳ Claiming..." : `🎁 Claim 10 ${selectedToken.symbol}`}
-          </button>
-
-          {/* Divider */}
-          <div className="my-6 border-t border-gray-200"></div>
-
-          {/* Add to Wallet CTA Section */}
-          <div className="text-center">
-            <p className="text-sm text-gray-600 mb-2">Want to see {selectedToken.symbol} in your wallet?</p>
-            <button
-              onClick={() => addTokenToWallet(selectedToken)}
-              className="inline-flex items-center justify-center px-5 py-2 rounded-xl text-sm font-semibold text-white bg-purple-600 hover:bg-purple-700 transition"
-            >
-              🦊 Add {selectedToken.symbol} to MetaMask
-            </button>
-          </div>
-        </div>
+        </motion.div>
       </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      {/* Header Section */}
+      <section className="relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-purple-400/10 to-blue-400/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-blue-400/10 to-indigo-400/10 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative z-10 max-w-4xl mx-auto px-6 py-16">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-12"
+          >
+            <h1 className="text-5xl md:text-6xl font-black mb-6">
+              <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                MetaCow
+              </span>
+              <span className="text-slate-800"> Faucet</span>
+            </h1>
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              Claim free tokens to test the MetaCow DEX and start your DeFi journey
+            </p>
+          </motion.div>
+
+          {/* Main Faucet Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8"
+          >
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl flex items-center justify-center">
+                <span className="text-white text-xl">🐄</span>
+              </div>
+              <div>
+                <h2 className="text-3xl font-bold text-slate-800">Token Faucet</h2>
+                <p className="text-slate-600">Get free tokens for testing</p>
+              </div>
+            </div>
+
+            {/* Token Selection and Status */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="space-y-3"
+              >
+                <label className="text-slate-700 font-semibold text-sm uppercase tracking-wide">
+                  Select Token
+                </label>
+                <div className="relative">
+                  <select
+                    className="w-full p-4 rounded-2xl border-2 border-slate-200 focus:border-purple-300 focus:ring-2 focus:ring-purple-200 bg-white/50 backdrop-blur-sm transition-all duration-300 font-medium"
+                    value={selectedToken.symbol}
+                    onChange={(e) =>
+                      setSelectedToken(tokenList.find((t) => t.symbol === e.target.value))
+                    }
+                  >
+                    {tokenList.map((token) => (
+                      <option key={token.symbol} value={token.symbol}>
+                        {token.symbol}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4, duration: 0.6 }}
+                className="space-y-3"
+              >
+                <label className="text-slate-700 font-semibold text-sm uppercase tracking-wide">
+                  Status
+                </label>
+                <div className="p-4 rounded-2xl border-2 border-slate-200 bg-white/50 backdrop-blur-sm">
+                  {cooldown === null ? (
+                    <div className="flex items-center gap-2 text-slate-600">
+                      <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></div>
+                      <span>Checking cooldown...</span>
+                    </div>
+                  ) : cooldown === 0 ? (
+                    <div className="flex items-center gap-2 text-green-600 font-semibold">
+                      <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+                      <span>Ready to claim 10 {selectedToken.symbol}!</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 text-orange-600 font-medium">
+                      <span className="w-3 h-3 bg-orange-500 rounded-full animate-pulse"></span>
+                      <span>Cooldown: {formatTime(cooldown)}</span>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Claim Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="mb-8"
+            >
+              <motion.button
+                whileHover={cooldown === 0 && !loading ? { scale: 1.02, y: -2 } : {}}
+                whileTap={cooldown === 0 && !loading ? { scale: 0.98 } : {}}
+                onClick={handleClaim}
+                disabled={cooldown > 0 || loading}
+                className={`w-full py-4 rounded-2xl font-bold text-lg transition-all duration-300 shadow-lg ${
+                  cooldown > 0 || loading
+                    ? "bg-gradient-to-r from-slate-200 via-slate-300 to-slate-400 text-slate-500 cursor-not-allowed"
+                    : "bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 hover:from-purple-700 hover:via-blue-700 hover:to-indigo-700 text-white hover:shadow-xl"
+                }`}
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Claiming tokens...</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-xl">🎁</span>
+                    <span>Claim 10 {selectedToken.symbol}</span>
+                  </div>
+                )}
+              </motion.button>
+            </motion.div>
+
+            {/* Divider */}
+            <div className="border-t border-slate-200 mb-8"></div>
+
+            {/* Add to Wallet Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+              className="text-center"
+            >
+              <div className="bg-gradient-to-r from-slate-50 to-blue-50 rounded-2xl p-6 border border-slate-200/50">
+                <h3 className="text-lg font-semibold text-slate-800 mb-2">
+                  Add to MetaMask
+                </h3>
+                <p className="text-slate-600 mb-4 text-sm">
+                  Want to see {selectedToken.symbol} in your wallet?
+                </p>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => addTokenToWallet(selectedToken)}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  <span>🦊</span>
+                  <span>Add {selectedToken.symbol} to MetaMask</span>
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Info Cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12"
+          >
+            {[
+              {
+                icon: "⚡",
+                title: "Fast Claims",
+                description: "Get tokens instantly with one click",
+                color: "from-yellow-500 to-orange-500"
+              },
+              {
+                icon: "🔒",
+                title: "Secure",
+                description: "Audited smart contracts ensure safety",
+                color: "from-green-500 to-emerald-500"
+              },
+              {
+                icon: "🆓",
+                title: "Free Tokens",
+                description: "No cost, just for testing purposes",
+                color: "from-purple-500 to-pink-500"
+              }
+            ].map((feature, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 + idx * 0.1, duration: 0.6 }}
+                className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center"
+              >
+                <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-xl flex items-center justify-center mx-auto mb-4`}>
+                  <span className="text-white text-xl">{feature.icon}</span>
+                </div>
+                <h3 className="text-lg font-bold text-slate-800 mb-2">{feature.title}</h3>
+                <p className="text-slate-600 text-sm">{feature.description}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }

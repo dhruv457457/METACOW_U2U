@@ -7,7 +7,7 @@ export default function ProfileHeader({ user, onEdit, reputation, followStats })
   };
 
   return (
-    <div className="flex items-center gap-6 bg-white rounded-3xl shadow-md p-6 border border-gray-100">
+       <div className="flex items-center gap-6 rounded-3xl p-6">
       <img
         src={user?.profileImage || "/assets/default-avatar.png"}
         alt="Profile"

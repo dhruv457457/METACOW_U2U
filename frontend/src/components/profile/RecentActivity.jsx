@@ -37,7 +37,7 @@ export default function RecentActivity({ wallet }) {
   if (loading) return <div className="text-center text-gray-500">⏳ Loading swaps...</div>;
 
   return (
-    <div className="bg-white rounded-3xl shadow-md p-6 border border-gray-100">
+     <div className="bg-white rounded-3xl p-6 border border-gray-100">
       <h3 className="text-lg font-bold text-gray-800 mb-4">📜 Recent Swaps</h3>
 
       {swaps.length === 0 ? (

@@ -10,6 +10,8 @@ import {
   ReferenceLine,
 } from "recharts";
 
+
+
 export default function SwapChart({
   tokenA,
   tokenB,
@@ -28,7 +30,7 @@ export default function SwapChart({
   const currentPrice = chartData.at(-1)?.price || 0;
 
   return (
-    <div className="rounded-xl bg-white border border-gray-100 shadow-xl px-6 py-5">
+  <div className="rounded-xl border border-gray-100  px-6 py-5">
       {/* Header */}
       <div className="flex justify-between items-center mb-3">
         <h3 className="text-gray-800 font-semibold text-lg">

@@ -11,18 +11,18 @@ import {
   saveSwapToBackend,
   getAllSwapsAcrossPairs,
 } from "../utils/transactionLog";
-
+import { motion, AnimatePresence } from "framer-motion";
 import SwapForm from "../components/swap/SwapForm";
 import SwapChart from "../components/swap/SwapChart";
 import TransactionList from "../components/TransactionList";
 import { ethers } from "ethers";
 import { tokenList } from "../utils/constants";
+
 // ✅ Default tokens (TKA & TKB)
 const DEFAULT_TOKENS = {
   TKA: tokenList.find((t) => t.symbol === "TKA"),
   TKB: tokenList.find((t) => t.symbol === "TKB"),
 };
-
 
 export default function Swap() {
   const [tokenA, setTokenA] = useState(DEFAULT_TOKENS.TKA);
@@ -31,7 +31,6 @@ export default function Swap() {
   const [amountOut, setAmountOut] = useState("");
   const [pairAddress, setPairAddress] = useState(null);
   const [transactions, setTransactions] = useState([]);
-  const [recentTransactions, setRecentTransactions] = useState([]);
   const [priceHistory, setPriceHistory] = useState([]);
   const { walletData } = useWallet();
   const address = walletData?.address;
@@ -112,7 +111,6 @@ export default function Swap() {
         };
       });
 
-      setRecentTransactions(filteredTxs.slice(0, 5));
       setPriceHistory(processed.sort((a, b) => a.timestamp - b.timestamp));
     } catch (err) {
       console.error("Error fetching txs:", err);
@@ -169,51 +167,126 @@ export default function Swap() {
 
   if (!isConnected) {
     return (
-      <div className="max-w-2xl mx-auto mt-12 text-center text-gray-700">
-        <p className="text-lg font-medium">
-          Please connect your wallet to use MetaCow Swap 🐮
-        </p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20">
+            <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span className="text-2xl">🔗</span>
+            </div>
+            <h2 className="text-2xl font-bold text-slate-800 mb-4">
+              Connect Your Wallet
+            </h2>
+            <p className="text-slate-600 max-w-md">
+              Please connect your wallet to start trading on MetaCow DEX
+            </p>
+          </div>
+        </motion.div>
       </div>
     );
   }
 
-return (
-  <div className="max-w-7xl mx-auto mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
-    {/* Left - Swap Form */}
-    <div>
-      <SwapForm
-        tokenA={tokenA}
-        tokenB={tokenB}
-        amountIn={amountIn}
-        amountOut={amountOut}
-        onAmountInChange={setAmountIn}
-        onTokenAChange={setTokenA}
-        onTokenBChange={setTokenB}
-        onSwitch={handleSwitch}
-        onSwap={handleSwap}
-        loading={loading}
-      />
-    </div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      {/* Header Section */}
+      <section className="relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-purple-400/10 to-blue-400/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-blue-400/10 to-indigo-400/10 rounded-full blur-3xl" />
+        </div>
 
-    {/* Right - Chart */}
-    <div>
-      <SwapChart
-        tokenA={tokenA}
-        tokenB={tokenB}
-        chartData={priceHistory}
-        onRefresh={fetchTransactions}
-        onClearLive={() => setPriceHistory([])}
-        loading={loadingTransactions}
-      />
-    </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
+     
 
-    {/* Full-width TransactionList */}
-    <div className="lg:col-span-2 mt-10 bg-white rounded-3xl shadow-xl border border-gray-100 p-6">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">
-        Public Transactions
-      </h3>
-      <TransactionList userAddress={address} transactions={transactions} />
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-12">
+            {/* Left - Swap Form */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+            >
+              <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl flex items-center justify-center">
+                    <span className="text-white text-lg">🔄</span>
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-slate-800">Swap Tokens</h2>
+                    <p className="text-slate-600 text-sm">Exchange tokens instantly</p>
+                  </div>
+                </div>
+                
+                <SwapForm
+                  tokenA={tokenA}
+                  tokenB={tokenB}
+                  amountIn={amountIn}
+                  amountOut={amountOut}
+                  onAmountInChange={setAmountIn}
+                  onTokenAChange={setTokenA}
+                  onTokenBChange={setTokenB}
+                  onSwitch={handleSwitch}
+                  onSwap={handleSwap}
+                  loading={loading}
+                />
+              </div>
+            </motion.div>
+
+            {/* Right - Chart */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+            >
+              <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8 h-full">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl flex items-center justify-center">
+                    <span className="text-white text-lg">📊</span>
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-slate-800">Price Chart</h2>
+                    <p className="text-slate-600 text-sm">Real-time trading data</p>
+                  </div>
+                </div>
+
+                <SwapChart
+                  tokenA={tokenA}
+                  tokenB={tokenB}
+                  chartData={priceHistory}
+                  onRefresh={fetchTransactions}
+                  onClearLive={() => setPriceHistory([])}
+                  loading={loadingTransactions}
+                />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Transactions Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-gradient-to-r from-orange-600 to-red-600 rounded-xl flex items-center justify-center">
+                <span className="text-white text-lg">📋</span>
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-slate-800">Recent Transactions</h2>
+                <p className="text-slate-600 text-sm">Live trading activity</p>
+              </div>
+            </div>
+
+            <TransactionList userAddress={address} transactions={transactions} />
+          </motion.div>
+        </div>
+      </section>
     </div>
-  </div>
-);
+  );
 }

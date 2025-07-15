@@ -41,15 +41,13 @@ export default function TransactionList({
 
   return (
     <div className="mt-6">
-      <h3 className="text-lg font-bold text-gray-700 mb-4">
-        💸 Recent Transactions
-      </h3>
+    
 
       <ul className="space-y-3">
         {currentItems.map((tx, i) => (
           <li
             key={i}
-            className={`px-4 py-3 rounded-lg shadow-sm border ${
+            className={`px-4 py-3 rounded-lg  border border-gray-100 ${
               i % 2 === 0 ? "bg-white" : "bg-gray-50"
             }`}
           >

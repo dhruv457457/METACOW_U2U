@@ -64,7 +64,7 @@ export default function LiquiditySidebar({ lpBalance, pairAddress, onClaim, addr
   return (
     <div className="space-y-6">
       {/* LP Position Box */}
-      <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6">
+      <div className="bg-white rounded-3xl  border border-gray-100 p-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-4">
           Your Position
         </h3>
@@ -75,7 +75,7 @@ export default function LiquiditySidebar({ lpBalance, pairAddress, onClaim, addr
       </div>
 
       {/* Rewards Box */}
-      <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6">
+         <div className="bg-white rounded-3xl  border border-gray-100 p-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-4">
           Claimable Rewards
         </h3>
@@ -95,7 +95,7 @@ export default function LiquiditySidebar({ lpBalance, pairAddress, onClaim, addr
       </div>
 
       {/* Pool Stats (dynamic) */}
-      <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6">
+        <div className="bg-white rounded-3xl border border-gray-100 p-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-4">
           Pool Statistics
         </h3>
