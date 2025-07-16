@@ -1,4 +1,3 @@
-![MetaCow Logo](https://res.cloudinary.com/dg2q2tzbv/image/upload/v1752641861/hackzen/j4p52rud65lqtgrfwyng.png)
 # 🐮 MetaCowDEX — Social DeFi Trading with Identity & Rewards
 
 MetaCowDEX is a decentralized exchange that blends token swaps, liquidity provisioning, and social trading into a unified on-chain identity experience. Built for the modern DeFi user, MetaCowDEX lets you trade, earn, follow, and build your reputation—all in one place.
