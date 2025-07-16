@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { useWallet } from "../contexts/WalletContext";
 import { motion } from "framer-motion";
-import LiquidityHeader from "../components/liquidity/LiquidityHeader";
 import LiquidityForm from "../components/liquidity/LiquidityForm";
 import LiquiditySidebar from "../components/liquidity/LiquiditySidebar";
 import TransactionList from "../components/TransactionList";
@@ -91,7 +90,7 @@ export default function Liquidity() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8  border border-white/20">
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
             <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
               <span className="text-2xl">💧</span>
             </div>
@@ -109,36 +108,34 @@ export default function Liquidity() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Header Section */}
-      <section className="relative overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-purple-400/10 to-indigo-400/10 rounded-full blur-3xl" />
-        </div>
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-20 -left-20 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl" />
+      </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
-        
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-12">
-            {/* Left - Liquidity Form */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
+        {/* Main Content Grid - RESTRUCTURED */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          
+          {/* == Left Column (Main Content) == */}
+          <div className="xl:col-span-2 space-y-8">
+            {/* 1. Liquidity Form Card */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="xl:col-span-2"
             >
               <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-                    <span className="text-white text-lg">💧</span>
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                    <span className="text-white text-xl">💧</span>
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-slate-800">Add Liquidity</h2>
                     <p className="text-slate-600 text-sm">Provide tokens to earn fees</p>
                   </div>
                 </div>
-
                 <LiquidityForm
                   tokenA={tokenA}
                   setTokenA={setTokenA}
@@ -161,54 +158,46 @@ export default function Liquidity() {
               </div>
             </motion.div>
 
-            {/* Right - Sidebar */}
+            {/* 2. Transactions Card */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8 h-fit">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl flex items-center justify-center">
-                    <span className="text-white text-lg">📊</span>
+              <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
+                    <span className="text-white text-xl">📋</span>
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-slate-800">Pool Stats</h2>
-                    <p className="text-slate-600 text-sm">Your liquidity overview</p>
+                    <h2 className="text-2xl font-bold text-slate-800">Recent Transactions</h2>
+                    <p className="text-slate-600 text-sm">Your liquidity activity</p>
                   </div>
                 </div>
-
-                <LiquiditySidebar
-                  lpBalance={lpBalance}
-                  pairAddress={pairAddress}
-                  address={address}
-                  onClaim={handleClaim}
-                />
+                <TransactionList userAddress={address} transactions={transactions} />
               </div>
             </motion.div>
           </div>
 
-          {/* Transactions Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8"
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-r from-orange-600 to-red-600 rounded-xl flex items-center justify-center">
-                <span className="text-white text-lg">📋</span>
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-slate-800">Recent Transactions</h2>
-                <p className="text-slate-600 text-sm">Your liquidity activity</p>
-              </div>
-            </div>
-
-            <TransactionList userAddress={address} transactions={transactions} />
-          </motion.div>
+          {/* == Right Column (Sidebar) == */}
+          <div className="xl:col-span-1">
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="sticky top-8" // Makes the sidebar stick on scroll
+            >
+              {/* The sidebar component now lives here directly */}
+              <LiquiditySidebar
+                lpBalance={lpBalance}
+                pairAddress={pairAddress}
+                address={address}
+                onClaim={handleClaim}
+              />
+            </motion.div>
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

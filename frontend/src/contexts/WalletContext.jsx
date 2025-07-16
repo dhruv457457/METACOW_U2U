@@ -88,6 +88,29 @@ export const WalletProvider = ({ children }) => {
     tryReconnect();
   }, []);
 
+  useEffect(() => {
+    const ethereum = MMSDK.getProvider();
+    if (!ethereum) return;
+
+    const handleChainChanged = () => {
+      connectWallet();
+    };
+
+    const handleAccountsChanged = () => {
+      connectWallet();
+    };
+
+    ethereum.on("chainChanged", handleChainChanged);
+    ethereum.on("accountsChanged", handleAccountsChanged);
+
+    return () => {
+      if (ethereum.removeListener) {
+        ethereum.removeListener("chainChanged", handleChainChanged);
+        ethereum.removeListener("accountsChanged", handleAccountsChanged);
+      }
+    };
+  }, []);
+
   return (
     <WalletContext.Provider
       value={{

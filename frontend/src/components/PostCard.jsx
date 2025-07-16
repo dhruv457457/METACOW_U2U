@@ -1,12 +1,51 @@
 import axios from "axios";
 import { useWallet } from "../contexts/WalletContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ThumbsUp, ThumbsDown, ExternalLink } from "lucide-react";
+import { ethers } from "ethers";
+import { FACTORY_ADDRESS, FACTORY_ABI, PAIR_ABI } from "../utils/constants";
+import { Interface } from "ethers";
 
 export default function PostCard({ post, refresh }) {
   const { walletData } = useWallet();
   const wallet = walletData?.address;
   const [liking, setLiking] = useState(false);
+  const [reputation, setReputation] = useState(null);
+
+  useEffect(() => {
+    const fetchReputation = async () => {
+      if (!post.wallet) return;
+      try {
+        // Connect to the user's wallet (or use a public provider if you don't need signing)
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const factory = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, provider);
+        const iface = new Interface(PAIR_ABI);
+        const pairCount = await factory.allPairsLength();
+        let totalScore = 0;
+
+        for (let i = 0; i < pairCount; i++) {
+          const pairAddr = await factory.allPairs(i);
+          const pair = new ethers.Contract(pairAddr, PAIR_ABI, provider);
+
+          const supportsReputation = iface.fragments.some((f) => f.name === "getReputationScore");
+          if (!supportsReputation) continue;
+
+          try {
+            const score = await pair.getReputationScore(post.wallet);
+            totalScore += Number(score);
+          } catch (err) {
+            // Ignore errors for pairs that don't support the function
+          }
+        }
+
+        setReputation(totalScore);
+      } catch (err) {
+        setReputation(null);
+      }
+    };
+
+    fetchReputation();
+  }, [post.wallet]);
 
   const handleLike = async () => {
     if (!wallet) return;
@@ -47,9 +86,16 @@ export default function PostCard({ post, refresh }) {
             className="w-9 h-9 rounded-full object-cover border"
           />
           <div>
-            <p className="text-sm font-semibold text-purple-700">
-              {post.username || truncate(post.wallet)}
-            </p>
+            <div className="flex items-center gap-2">
+              {reputation !== null && (
+                <span className="text-xs text-blue-600 font-semibold">
+                  ⭐ {reputation}
+                </span>
+              )}
+              <p className="text-sm font-semibold text-purple-700">
+                {post.username || truncate(post.wallet)}
+              </p>
+            </div>
             <p className="text-xs text-gray-400">{new Date(post.createdAt).toLocaleString()}</p>
           </div>
         </div>

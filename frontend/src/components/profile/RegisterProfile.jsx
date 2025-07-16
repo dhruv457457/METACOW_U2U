@@ -42,7 +42,7 @@ export default function RegisterProfile({ wallet, onRegister }) {
   };
 
   return (
-    <div className="bg-white max-w-xl mx-auto mt-16 rounded-3xl p-8 shadow-lg border border-gray-100 text-center">
+    <div className="bg-white max-w-xl mx-auto  rounded-3xl p-8 shadow-lg border border-gray-100 text-center">
       <div className="text-4xl mb-4">👋 Welcome!</div>
       <p className="text-gray-600 mb-6">
         Let’s register your <strong>.cow</strong> username.
