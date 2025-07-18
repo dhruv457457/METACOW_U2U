@@ -1,6 +1,10 @@
 const Swap = require("../models/Swap");
 const User = require("../models/User"); // Make sure this is imported
 
+function isAddress(str) {
+  return /^0x[a-fA-F0-9]{40}$/.test(str);
+}
+
 // POST /api/swaps
 exports.createSwap = async (req, res) => {
   try {
@@ -19,6 +23,10 @@ exports.createSwap = async (req, res) => {
     // ✅ Defensive check
     if (!user || typeof user !== "string") {
       return res.status(400).json({ error: "Missing or invalid wallet address in request body" });
+    }
+
+    if (!isAddress(inputToken) || !isAddress(outputToken)) {
+      return res.status(400).json({ error: "inputToken and outputToken must be addresses" });
     }
 
     // Fetch user profile (optional)

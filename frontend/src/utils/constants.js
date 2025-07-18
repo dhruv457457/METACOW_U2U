@@ -21,7 +21,7 @@ export const tokenList = [
     logoURI: "/logos/tkb.png",
   },
   {
-    symbol: "USDT",
+    symbol: "USD",
     address: "0x35f7F94224ed0fE995f391CeC8FA7dEe64107Bf1",
     decimals: 18,
     logoURI: "/logos/usdt.png",
@@ -33,4 +33,6 @@ export const tokenList = [
     logoURI: "/logos/moc.png",
   },
 ];
+
+
 

@@ -22,13 +22,13 @@ exports.createPost = async (req, res) => {
 
     const newPost = new Post({
       wallet,
-      content,
-      txHash: txHash || "",
-      pairAddress: pairAddress || "",
-      tokenIn: tokenIn || "",
-      tokenOut: tokenOut || "",
-      amountIn: amountIn || "",
-      amountOut: amountOut || "",
+      content: postContent,
+      txHash,
+      pairAddress: swap.pairAddress || "",
+      tokenIn: swap.inputToken,   // <-- should be address!
+      tokenOut: swap.outputToken, // <-- should be address!
+      amountIn: swap.inputAmount,
+      amountOut: swap.outputAmount,
     });
 
     await newPost.save();

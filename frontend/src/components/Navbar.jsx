@@ -35,7 +35,11 @@ const BNB_TESTNET_PARAMS = {
   chainId: "0x61",
   chainName: "Binance Smart Chain Testnet",
   nativeCurrency: { name: "Binance Coin", symbol: "tBNB", decimals: 18 },
-  rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545/"],
+  rpcUrls: [
+    "https://data-seed-prebsc-1-s1.binance.org:8545/",
+    "https://data-seed-prebsc-2-s1.binance.org:8545/",
+    "https://bnb-testnet.g.alchemy.com/v2/prb3bBkj1v9clt6hCTvVqcOBOCCHgLc6",
+  ],
   blockExplorerUrls: ["https://testnet.bscscan.com"],
 };
 
@@ -50,6 +54,7 @@ export default function Navbar() {
   const [lpBalance, setLpBalance] = useState("0.0");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [wrongNetwork, setWrongNetwork] = useState(false);
+  const [rpcError, setRpcError] = useState(false);
 
   useEffect(() => {
     setWrongNetwork(isConnected && chainId !== BNB_TESTNET_CHAIN_ID);
@@ -64,10 +69,19 @@ export default function Navbar() {
     const fetchBalance = async () => {
       if (!address || wrongNetwork) return;
       try {
+        setRpcError(false);
         const dummyPair = "0xe4452Fb3896115E28E8d4A5491019Ad8f0b66050";
         const balance = await getLPBalance(dummyPair, address);
         setLpBalance(parseFloat(balance).toFixed(4));
       } catch (err) {
+        // Detect the "missing trie node" or "Internal JSON-RPC error"
+        if (
+          err?.message?.includes("missing trie node") ||
+          err?.message?.includes("Internal JSON-RPC error") ||
+          err?.code === -32603
+        ) {
+          setRpcError(true);
+        }
         console.error("Failed to fetch LP", err);
       }
     };
@@ -142,6 +156,12 @@ export default function Navbar() {
           >
             Switch to BNB Testnet
           </button>
+        </div>
+      )}
+      {rpcError && (
+        <div className="w-full bg-yellow-100 text-yellow-800 text-center py-2 px-4 font-semibold rounded mb-2">
+          ⚠️ Network is busy or your RPC is having issues.<br />
+          Please try reconnecting your wallet or switch to a different RPC endpoint in MetaMask.
         </div>
       )}
       <nav className="bg-white/80 backdrop-blur-xl border-b border-gray-200/80 sticky top-0 z-40">

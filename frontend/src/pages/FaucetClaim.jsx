@@ -124,7 +124,7 @@ export default function FaucetClaim() {
           <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-blue-400/10 to-indigo-400/10 rounded-full blur-3xl" />
         </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 py-16">
+        <div className="relative z-10 max-w-4xl mx-auto px-6 ">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -137,9 +137,7 @@ export default function FaucetClaim() {
               </span>
               <span className="text-slate-800"> Faucet</span>
             </h1>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-              Claim free tokens to test the MetaCow DEX and start your DeFi journey
-            </p>
+         
           </motion.div>
 
           {/* Main Faucet Card */}
@@ -278,49 +276,35 @@ export default function FaucetClaim() {
               </div>
             </motion.div>
           </motion.div>
+{/* Testnet BNB Faucet */}
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.7, duration: 0.6 }}
+  className="text-center mt-12"
+>
+  <div className="bg-gradient-to-r from-yellow-50 via-white to-yellow-100 rounded-2xl p-6 border border-yellow-200 shadow-inner">
+    <h3 className="text-lg font-semibold text-yellow-800 mb-2">
+      Need Testnet BNB for Gas?
+    </h3>
+    <p className="text-yellow-700 mb-4 text-sm">
+      Claim free BNB for gas fees on Binance Smart Chain Testnet.
+    </p>
+    <motion.a
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      target="_blank"
+      rel="noopener noreferrer"
+      href="https://testnet.bnbchain.org/faucet-smart"
+      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:via-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+    >
+      <span>🔶</span>
+      <span>Claim Testnet BNB</span>
+    </motion.a>
+  </div>
+</motion.div>
 
-          {/* Info Cards */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.8 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12"
-          >
-            {[
-              {
-                icon: "⚡",
-                title: "Fast Claims",
-                description: "Get tokens instantly with one click",
-                color: "from-yellow-500 to-orange-500"
-              },
-              {
-                icon: "🔒",
-                title: "Secure",
-                description: "Audited smart contracts ensure safety",
-                color: "from-green-500 to-emerald-500"
-              },
-              {
-                icon: "🆓",
-                title: "Free Tokens",
-                description: "No cost, just for testing purposes",
-                color: "from-purple-500 to-pink-500"
-              }
-            ].map((feature, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 + idx * 0.1, duration: 0.6 }}
-                className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/20 text-center"
-              >
-                <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-xl flex items-center justify-center mx-auto mb-4`}>
-                  <span className="text-white text-xl">{feature.icon}</span>
-                </div>
-                <h3 className="text-lg font-bold text-slate-800 mb-2">{feature.title}</h3>
-                <p className="text-slate-600 text-sm">{feature.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+         
         </div>
       </section>
     </div>

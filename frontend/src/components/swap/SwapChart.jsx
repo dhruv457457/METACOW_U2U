@@ -9,8 +9,7 @@ import {
   CartesianGrid,
   ReferenceLine,
 } from "recharts";
-
-
+import RenderLoadingNotice from "../RenderLoadingNotice";
 
 export default function SwapChart({
   tokenA,
@@ -58,7 +57,9 @@ export default function SwapChart({
 
       {/* Chart */}
       <div className="h-[300px]">
-        {chartData.length > 0 ? (
+        {loading ? (
+          <RenderLoadingNotice show={loading} />
+        ) : chartData.length > 0 ? (
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f1f1" />
@@ -109,26 +110,28 @@ export default function SwapChart({
       </div>
 
       {/* Stats */}
-      <div className="mt-5 grid grid-cols-3 gap-4 text-sm">
-        <div className="text-center">
-          <div className="text-gray-500">Current Price</div>
-          <div className="font-semibold text-purple-600">
-            {currentPrice.toFixed(6)}
+      {!loading && (
+        <div className="mt-5 grid grid-cols-3 gap-4 text-sm">
+          <div className="text-center">
+            <div className="text-gray-500">Current Price</div>
+            <div className="font-semibold text-purple-600">
+              {currentPrice.toFixed(6)}
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-gray-500">24h High</div>
+            <div className="font-semibold text-green-600">
+              {maxPrice.toFixed(6)}
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-gray-500">24h Low</div>
+            <div className="font-semibold text-red-600">
+              {minPrice.toFixed(6)}
+            </div>
           </div>
         </div>
-        <div className="text-center">
-          <div className="text-gray-500">24h High</div>
-          <div className="font-semibold text-green-600">
-            {maxPrice.toFixed(6)}
-          </div>
-        </div>
-        <div className="text-center">
-          <div className="text-gray-500">24h Low</div>
-          <div className="font-semibold text-red-600">
-            {minPrice.toFixed(6)}
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

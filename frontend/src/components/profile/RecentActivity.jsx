@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getTokenSymbol } from "../../utils/transactionLog";
+import RenderLoadingNotice from "../RenderLoadingNotice";
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 8;
 
 export default function RecentActivity({ wallet }) {
   const [swaps, setSwaps] = useState([]);
@@ -34,7 +35,7 @@ export default function RecentActivity({ wallet }) {
     }
   };
 
-  if (loading) return <div className="text-center text-gray-500">⏳ Loading swaps...</div>;
+  if (loading) return <RenderLoadingNotice show={loading} />;
 
   return (
      <div className="bg-white rounded-3xl p-6 border border-gray-100">

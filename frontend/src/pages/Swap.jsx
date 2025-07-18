@@ -39,19 +39,32 @@ export default function Swap() {
   const [loadingTransactions, setLoadingTransactions] = useState(false);
   const location = useLocation();
 
+  const unsupportedToken = tokenA?.symbol === "Unknown" || tokenB?.symbol === "Unknown";
+
   useEffect(() => {
     if (location.state) {
       const { tokenA: tokenAAddr, tokenB: tokenBAddr, amountIn } = location.state;
+      console.log(tokenAAddr, tokenBAddr, amountIn);
       if (tokenAAddr && tokenBAddr) {
-        setTokenA({ address: tokenAAddr, symbol: "TKA" });
-        setTokenB({ address: tokenBAddr, symbol: "TKB" });
+        const tokenAObj = tokenList.find(t => t.address.toLowerCase() === tokenAAddr.toLowerCase());
+        const tokenBObj = tokenList.find(t => t.address.toLowerCase() === tokenBAddr.toLowerCase());
+        setTokenA(tokenAObj || { address: tokenAAddr, symbol: "Unknown" });
+        setTokenB(tokenBObj || { address: tokenBAddr, symbol: "Unknown" });
+        setTimeout(() => {
+          if (amountIn) setAmountIn(amountIn);
+        }, 0);
+      } else if (amountIn) {
+        setAmountIn(amountIn);
       }
-      if (amountIn) setAmountIn(amountIn);
     }
   }, [location.state]);
 
   useEffect(() => {
     const fetchEstimate = async () => {
+      if (unsupportedToken) {
+        setAmountOut("");
+        return;
+      }
       if (tokenA && tokenB && amountIn) {
         try {
           const pair = await getPairAddress(tokenA.address, tokenB.address);
@@ -82,7 +95,7 @@ export default function Swap() {
     };
 
     fetchEstimate();
-  }, [tokenA, tokenB, amountIn]);
+  }, [tokenA, tokenB, amountIn, unsupportedToken]);
 
   const fetchTransactions = async () => {
     setLoadingTransactions(true);
@@ -124,6 +137,10 @@ export default function Swap() {
   }, [address, tokenA, tokenB]);
 
   const handleSwap = async () => {
+    if (unsupportedToken) {
+      showWarning("One or both tokens are not supported for swap.");
+      return;
+    }
     if (!tokenA || !tokenB || !amountIn || !pairAddress) {
       showWarning("Please fill all fields.");
       return;
@@ -201,7 +218,12 @@ export default function Swap() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
-     
+          {/* Show warning if unsupported token */}
+          {unsupportedToken && (
+            <div className="bg-red-100 text-red-700 p-4 rounded-xl mb-6 text-center font-semibold">
+              One or both tokens are not supported for swap estimation. Please select a supported token.
+            </div>
+          )}
 
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-12">

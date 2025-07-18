@@ -8,6 +8,7 @@ import ProfileEdit from "../components/profile/ProfileEdit";
 import RecentActivity from "../components/profile/RecentActivity";
 import SocialFeed from "../components/profile/SocialFeed";
 import RegisterProfile from "../components/profile/RegisterProfile";
+import RenderLoadingNotice from "../components/RenderLoadingNotice";
 
 import { FACTORY_ADDRESS, FACTORY_ABI, PAIR_ABI } from "../utils/constants";
 import { Interface } from "ethers";
@@ -100,7 +101,7 @@ useEffect(() => {
   }
 
   if (loading) {
-    return <div className="text-center mt-12 text-gray-500">⏳ Loading profile...</div>;
+    return <RenderLoadingNotice show={loading} />;
   }
 if (!user || !user.username || user.username === "unknown") {
   return <RegisterProfile wallet={address} onRegister={setUser} />;
