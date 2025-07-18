@@ -57,7 +57,7 @@ export default function PostCard({ post, refresh, userWallet }) {
     if (!currentUserWallet) return;
     try {
       setLiking(true);
-      await axios.post(`http://localhost:5000/api/posts/${post._id}/like`, { wallet: currentUserWallet });
+      await axios.post(`https://meta-cow.onrender.com/api/posts/${post._id}/like`, { wallet: currentUserWallet });
       refresh(); // Refresh parent's posts state
     } catch (err) {
       console.error("Like failed", err);
@@ -70,7 +70,7 @@ export default function PostCard({ post, refresh, userWallet }) {
     if (!currentUserWallet) return;
     try {
       setLiking(true);
-      await axios.post(`http://localhost:5000/api/posts/${post._id}/dislike`, { wallet: currentUserWallet });
+      await axios.post(`https://meta-cow.onrender.com/api/posts/${post._id}/dislike`, { wallet: currentUserWallet });
       refresh(); // Refresh parent's posts state
     } catch (err) {
       console.error("Dislike failed", err);

@@ -31,9 +31,9 @@ export default function SocialPage() {
   // ... (all your existing fetchUser, fetchPosts, fetchRecentSwaps, createPost, createPostFromSwap, search, followUser, unfollowUser functions) ...
   const fetchUser = useCallback(async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/users/wallet/${wallet}`);
+      const res = await axios.get(`https://meta-cow.onrender.com/api/users/wallet/${wallet}`);
       setUser(res.data);
-      const followRes = await axios.get(`http://localhost:5000/api/follow/following/${res.data._id}`);
+      const followRes = await axios.get(`https://meta-cow.onrender.com/api/follow/following/${res.data._id}`);
       setFollowing(followRes.data.map((u) => u._id));
     } catch (err) {
       console.error("Failed to fetch user", err);
@@ -43,7 +43,7 @@ export default function SocialPage() {
   const fetchPosts = useCallback(async () => {
     try {
       setFetching(true);
-      const res = await axios.get("http://localhost:5000/api/posts");
+      const res = await axios.get("https://meta-cow.onrender.com/api/posts");
       const data = Array.isArray(res.data) ? res.data : res.data?.posts || [];
       setPosts(data);
     } catch (err) {
@@ -56,7 +56,7 @@ export default function SocialPage() {
   const fetchRecentSwaps = useCallback(async () => {
     if (!wallet) return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/swaps/recent?user=${wallet}`);
+      const res = await axios.get(`https://meta-cow.onrender.com/api/swaps/recent?user=${wallet}`);
       setRecentSwaps(res.data || []);
     } catch (err) {
       console.error("Failed to fetch recent swaps", err);
@@ -67,7 +67,7 @@ export default function SocialPage() {
     if (!wallet || !content.trim()) return;
     try {
       setLoading(true);
-      await axios.post("http://localhost:5000/api/posts", {
+      await axios.post("https://meta-cow.onrender.com/api/posts", {
         wallet,
         content,
       });
@@ -83,7 +83,7 @@ export default function SocialPage() {
   const createPostFromSwap = async (txHash, content = "") => {
     try {
       setLoading(true);
-      await axios.post("http://localhost:5000/api/posts/from-swap", {
+      await axios.post("https://meta-cow.onrender.com/api/posts/from-swap", {
         wallet,
         content,
         txHash,
@@ -102,7 +102,7 @@ export default function SocialPage() {
         return;
     }
     try {
-      const res = await axios.get(`http://localhost:5000/api/users/search?query=${query}`);
+      const res = await axios.get(`https://meta-cow.onrender.com/api/users/search?query=${query}`);
       setResults(res.data || []);
     } catch (err) {
       console.error("Search failed", err);
@@ -111,7 +111,7 @@ export default function SocialPage() {
 
   const followUser = async (targetUserId) => {
     try {
-      await axios.post(`http://localhost:5000/api/follow/follow/${targetUserId}`, {
+      await axios.post(`https://meta-cow.onrender.com/api/follow/follow/${targetUserId}`, {
         followerId: user._id,
       });
       setFollowing((prev) => [...prev, targetUserId]);
@@ -122,7 +122,7 @@ export default function SocialPage() {
 
   const unfollowUser = async (targetUserId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/follow/unfollow/${targetUserId}`, {
+      await axios.delete(`https://meta-cow.onrender.com/api/follow/unfollow/${targetUserId}`, {
         data: { followerId: user._id },
       });
       setFollowing((prev) => prev.filter((id) => id !== targetUserId));

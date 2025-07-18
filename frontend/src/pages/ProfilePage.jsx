@@ -27,7 +27,7 @@ const [followStats, setFollowStats] = useState({ followersCount: 0, followingCou
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/users/wallet/${address}`);
+        const res = await axios.get(`https://meta-cow.onrender.com/api/users/wallet/${address}`);
         setUser(res.data);
       } catch (err) {
         console.error("User fetch error:", err);
@@ -43,7 +43,7 @@ useEffect(() => {
   const fetchFollowStats = async () => {
     if (!user?._id) return;
     try {
-const res = await axios.get(`http://localhost:5000/api/follow/stats/wallet/${address}`);
+const res = await axios.get(`https://meta-cow.onrender.com/api/follow/stats/wallet/${address}`);
       setFollowStats(res.data);
     } catch (err) {
       console.error("Follow stats fetch error:", err);
@@ -86,7 +86,7 @@ const res = await axios.get(`http://localhost:5000/api/follow/stats/wallet/${add
 useEffect(() => {
   const fetchTradeCount = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/swaps/count?user=${address}`);
+      const res = await axios.get(`https://meta-cow.onrender.com/api/swaps/count?user=${address}`);
       setUser((prev) => ({ ...prev, totalTrades: res.data?.count || 0 }));
     } catch (err) {
       console.error("Trade count fetch error:", err);

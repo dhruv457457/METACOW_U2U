@@ -13,7 +13,7 @@ export default function RecentActivity({ wallet }) {
   useEffect(() => {
     const fetchSwaps = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/swaps/recent?user=${wallet}`);
+        const res = await axios.get(`https://meta-cow.onrender.com/api/swaps/recent?user=${wallet}`);
         setSwaps(res.data || []);
       } catch (err) {
         console.error("Failed to fetch swaps:", err);

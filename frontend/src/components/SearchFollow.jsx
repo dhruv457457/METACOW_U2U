@@ -9,20 +9,20 @@ export default function SearchFollow({ currentUserId }) {
   useEffect(() => {
     if (!currentUserId) return;
     axios
-      .get(`http://localhost:5000/api/follow/following/${currentUserId}`)
+      .get(`https://meta-cow.onrender.com/api/follow/following/${currentUserId}`)
       .then((res) => setFollowing(res.data.map((u) => u._id)))
       .catch((err) => console.error("Failed to fetch following list", err));
   }, [currentUserId]);
 
   const search = async () => {
     if (!query.trim()) return;
-    const res = await axios.get(`http://localhost:5000/api/users/search?query=${query}`);
+    const res = await axios.get(`https://meta-cow.onrender.com/api/users/search?query=${query}`);
     setResults(res.data || []);
   };
 
   const followUser = async (targetUserId) => {
     try {
-      await axios.post(`http://localhost:5000/api/follow/follow/${targetUserId}`, {
+      await axios.post(`https://meta-cow.onrender.com/api/follow/follow/${targetUserId}`, {
         followerId: currentUserId,
       });
       setFollowing((prev) => [...prev, targetUserId]);
@@ -33,7 +33,7 @@ export default function SearchFollow({ currentUserId }) {
 
   const unfollowUser = async (targetUserId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/follow/unfollow/${targetUserId}`, {
+      await axios.delete(`https://meta-cow.onrender.com/api/follow/unfollow/${targetUserId}`, {
         data: { followerId: currentUserId },
       });
       setFollowing((prev) => prev.filter((id) => id !== targetUserId));

@@ -96,7 +96,7 @@ export async function getAllUserSwaps(userAddress, limit = 100) {
 
   try {
     const res = await fetch(
-      `http://localhost:5000/api/swaps/recent?user=${userAddress}&limit=${limit}`
+      `https://meta-cow.onrender.com/api/swaps/recent?user=${userAddress}&limit=${limit}`
     );
     if (!res.ok) throw new Error("Backend fetch failed");
     const data = await res.json();
@@ -114,7 +114,7 @@ export async function getAllUserSwaps(userAddress, limit = 100) {
 
 export async function getAllSwapsAcrossPairs(limit = 50) {
   try {
-    const res = await fetch(`http://localhost:5000/api/swaps/recent?limit=${limit}`);
+    const res = await fetch(`https://meta-cow.onrender.com/api/swaps/recent?limit=${limit}`);
     if (!res.ok) throw new Error("Backend fetch failed");
     const data = await res.json();
 
@@ -131,7 +131,7 @@ export async function getAllSwapsAcrossPairs(limit = 50) {
 
 export async function saveSwapToBackend(swapData) {
   try {
-    const res = await fetch("http://localhost:5000/api/swaps", {
+    const res = await fetch("https://meta-cow.onrender.com/api/swaps", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(swapData),

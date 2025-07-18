@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
         return;
       }
 
-      const nonceRes = await fetch("http://localhost:5000/api/auth/nonce", {
+      const nonceRes = await fetch("https://meta-cow.onrender.com/api/auth/nonce", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ wallet: walletData.address }),
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
 
       const signature = await walletData.signer.signMessage(nonce);
 
-      const verifyRes = await fetch("http://localhost:5000/api/auth/verify", {
+      const verifyRes = await fetch("https://meta-cow.onrender.com/api/auth/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ wallet: walletData.address, signature }),
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserProfile = async (jwt = token) => {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/me", {
+      const res = await fetch("https://meta-cow.onrender.com/api/auth/me", {
         headers: { Authorization: "Bearer " + jwt },
       });
       const data = await res.json();

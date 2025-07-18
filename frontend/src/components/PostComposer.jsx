@@ -18,7 +18,7 @@ export default function PostComposer({ wallet, user, refreshPosts }) {
     const fetchRecentSwaps = async () => {
       if (!wallet) return;
       try {
-        const res = await axios.get(`http://localhost:5000/api/swaps/recent?user=${wallet}`);
+        const res = await axios.get(`https://meta-cow.onrender.com/api/swaps/recent?user=${wallet}`);
         setRecentSwaps(res.data || []);
       } catch (err) {
         console.error("Failed to fetch recent swaps", err);
@@ -32,13 +32,13 @@ export default function PostComposer({ wallet, user, refreshPosts }) {
     try {
       setLoading(true);
       if (selectedSwap) {
-        await axios.post("http://localhost:5000/api/posts/from-swap", {
+        await axios.post("https://meta-cow.onrender.com/api/posts/from-swap", {
           wallet,
           content,
           txHash: selectedSwap.txHash,
         });
       } else {
-        await axios.post("http://localhost:5000/api/posts", {
+        await axios.post("https://meta-cow.onrender.com/api/posts", {
           wallet,
           content,
         });
