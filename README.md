@@ -6,9 +6,9 @@ MetaCowDEX is a decentralized exchange that blends token swaps, liquidity provis
 > 🟢 **Backend API:** Deployed on Render  
 > ⛓️ **Chain:** BNB Chain Testnet
 
-> 🧑‍💻 **Deployer:** `0xF8A440f0c3912F42dF794983B8164cB6572fCBCC`  
-> 🏗 **Pair Logic:** `0xad546B8Af6dDDc3113705aa3Eb659D67141A264F`  
-> 🏭 **Factory Proxy:** `0x524Fec22546B087E91D198745CdD6ea94C057D79`
+Deploying with: 0xF8A440f0c3912F42dF794983B8164cB6572fCBCC
+Pair logic deployed at: 0x1e792D4c34c3d04Bd127aFEf0c1696E912c755aa
+Factory proxy deployed at: 0x2A07A0013877e3bcCDd42Da8171457B0B54EB54d
 
 ---
 
